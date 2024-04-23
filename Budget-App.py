@@ -1,18 +1,67 @@
 class Category:
-    
+
+"""
+	-> We first define the category class, and then the `create_spend_chart` function
+
+    Defining the category class:
+        -> There are multiple methods which we define as part of this 
+        -> They are all aimed at targeting the bank balance of the category objects 
+
+    -> We first define the category class, and then the `create_spend_chart` function
+
+	Defining the category class:
+        -> There are multiple methods which we define as part of this 
+        -> They are all aimed at targeting the bank balance of the category objects 
+
+	The __init__ method:
+	-> This method initialises a category 
+	-> This has a name, empty leger (list) and sets the current balance and spending to zero 
+	-> self.ledger <- This is an empty list we initialise, to store transaction details 
+	-> self.current_balance and self.spending are then initialised at zero
+"""
+
     def __init__(self, name):
         self.name = name
         self.ledger = []
         self.current_balance = 0
         self.spending = 0
-    
+
+"""    
+    The `check_funds` method:
+        -> This is the method which we use to check if the account has enough money for the 
+            purchase to go through 
+        -> Either we have enough money for the transaction, or we don't 
+        -> This truth is stored as a boolean
+"""
+
     def check_funds(self, amount):
         return amount <= self.current_balance
-    
+
+"""
+	The deposit method:
+        -> This adds a deposit transaction to the ledger and updates the current balance 
+        -> Take these amounts (`amount`) and (`description`) and update the current balance 
+        -> It takes an amount and an optional argument, called `description`
+        -> We append a dictionary representing the deposit transaction to `self.ledger`
+        -> We then increase the current balance by this amount     
+"""
+
     def deposit(self, amount, description=''):
         self.ledger.append({'amount':amount*1.00, 'description':description})
         self.current_balance = self.current_balance + amount
-        
+
+ """
+   The withdraw method:
+     -> We have multiple categories, each has a balance
+	-> This is the method which handles withdrawals from a category
+	-> This category has a balance, and to make the withdrawal we need enough money 
+	-> If the balance is less than the amount we want to withdraw, then there isn't enough 
+        money in the balance to execute the withdrawal and a False boolean is returned 
+	-> If the balance is more than the amount we want to withdraw, then we execute the withdrawal 
+	-> This means updating the balance, logging that a withdrawal has happened in the ledger 
+        and updating the spending value  
+"""
+   
     def withdraw(self, amount, description=''):
         if self.check_funds(amount) == True:
             self.ledger.append({'amount':-amount*1.00, 'description':description})
@@ -22,6 +71,16 @@ class Category:
         else:
             return False
     
+ """
+   The transfer method:
+	-> We have a target and a withdrawal category 
+	-> We want to take an amount of money and move it from the target to the withdrawal category
+	-> False is returned if the amount of money which we want to transfer is greater than the balance 
+        of the account we want to transfer it from
+	-> Otherwise, the transfer is executed 
+	-> This would involve using the `withdraw` and `deposit` methods 
+"""            
+
     def transfer(self, amount, target):
         if self.check_funds(amount) == True:
             self.withdraw(amount, 'Transfer to ' + target.name)            
@@ -30,6 +89,8 @@ class Category:
             return True
         else:
             return False    
+
+# This method gives the balance of the category we are currently dealing with             
         
     def get_balance(self):
         return self.current_balance
@@ -46,7 +107,14 @@ class Category:
         
         return a
     
-    
+ """
+   The create_spend_chart:
+	-> This is a bar chart function 
+	-> We have multiple different categories, and each has spending associated with them 
+	-> Each category has its own height on the bar chart
+	-> This relates to the percentage of total spending for that category, relative to the others 
+"""
+
 def create_spend_chart(categories):
     spendings = []
     spendings_perc =[]
@@ -142,7 +210,6 @@ def create_spend_chart(categories):
     for perc in spendings_perc:
         line_dash = line_dash + '---'
             
-    
     # make x label
     max_length = max([len(cate.name) for cate in categories])
    
