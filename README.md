@@ -6,5 +6,5 @@ Error handling was implemented for this, to ensure that a series of conditions w
 
 ### To Clone This Repository
 ```
-git clone https://github.com/franpanteli/Time-Calculator-Python-Project.git
+git clone https://github.com/franpanteli/Budget-App-Python-Project.git
 ```
